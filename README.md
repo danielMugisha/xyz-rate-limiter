@@ -17,8 +17,8 @@ Notification service performance solution.
 
 #### Project installation
 
-- clone the repo: `git clone`
-- switch to project directory : ``
+- clone the repo: `git clone https://github.com/danielMugisha/xyz-rate-limiter.git`
+- switch to project directory : `cd xyz-rate-limiter`
 - install all required dependencies: `npm install`
 - start the server : `npm run dev`
 
@@ -39,8 +39,8 @@ Request: localhost:3000/api/notifications
  {
     "status": 200,
 	"response": "Request Processed",
-	"availableRequestsInAMinite": 3,
-	"availableRequestsInAMonth": 19,
+	"availableRequestsInAMinite": 3,(keeps on reducing as your allowed tests reduce)
+	"availableRequestsInAMonth": 19,(keeps on reducing as your allowed tests reduce)
 }
 
 and the information will be displayed on the page
