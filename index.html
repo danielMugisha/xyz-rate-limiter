@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>XYZ Rate Limitter with Redis</title>
+		<style>
+			body {
+				background-color: rgb(209, 206, 202);
+				display: flex;
+				justify-content: center;
+				font-family: "Courier New", Courier, monospace;
+			}
+
+			h1 {
+				color: maroon;
+				margin-left: 40px;
+			}
+			button {
+				background-color: #4285f4;
+				padding: 10px 20px;
+				border: none;
+				border-radius: 4px;
+				text-transform: uppercase;
+				font-weight: 600;
+			}
+			.container {
+				text-align: center;
+				border: 1px solid linen;
+				width: 60%;
+			}
+			.response {
+				margin: 20px 0;
+				font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+			}
+			.info {
+				font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+					"Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<h1>XYZ Notifications API Tester</h1>
+			<button id="api">call api</button>
+
+			<div class="response">
+				<div id="res_status"></div>
+				<div id="response"></div>
+			</div>
+
+			<div class="info">
+				Remaining requests per minute: <span id="minute">4</span><br />
+				Remaining requests per month:<span id="month">20</span>
+			</div>
+		</div>
+
+		<script>
+			const apiCall = document.getElementById("api");
+			const res_status = document.getElementById("res_status");
+			const response = document.getElementById("response");
+			const minute = document.getElementById("minute");
+			const month = document.getElementById("month");
+
+			api.addEventListener("click", () => hitApi());
+
+			async function hitApi() {
+				const res = await fetch(`/api/notifications`, { method: "GET" }).then(
+					(t) => t.json()
+				);
+				const responseCode = res.status;
+				const responseText = res.response;
+				const availableRequestsInAMinite = res.availableRequestsInAMinite;
+				const availableRequestsInAMonth = res.availableRequestsInAMonth;
+				res_status.innerText = `${responseCode}`;
+				response.innerText = `${responseText}`;
+				minute.innerText = `${availableRequestsInAMinite}`;
+				month.innerText = `${availableRequestsInAMonth}`;
+			}
+		</script>
+	</body>
+</html>

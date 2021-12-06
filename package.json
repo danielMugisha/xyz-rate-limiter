@@ -1,0 +1,30 @@
+{
+	"name": "xyz-rate-limiter",
+	"version": "1.0.0",
+	"description": "redis rate limiter for perfomance issues at company xyz",
+	"main": "index.js",
+	"scripts": {
+		"test": "mocha",
+		"start": "nodemon index.js",
+		"dev": "nodemon index.js"
+	},
+	"keywords": [
+		"rate-limit",
+		"throttling",
+		"redis"
+	],
+	"author": "Daniel Mugisha",
+	"license": "ISC",
+	"dependencies": {
+		"chai": "^4.3.4",
+		"chai-http": "^4.3.0",
+		"dotenv": "^10.0.0",
+		"express": "^4.17.1",
+		"ioredis": "^4.28.2",
+		"lodash": "^4.17.21",
+		"mocha": "^9.1.3",
+		"node-fetch": "^3.1.0",
+		"nodemon": "^2.0.15",
+		"path": "^0.12.7"
+	}
+}
