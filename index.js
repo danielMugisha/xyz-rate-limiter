@@ -7,6 +7,8 @@ const app = express();
 app.use(express.json());
 
 const port = process.env.PUBLIC_PORT || 3000;
+const minuteWindow = parseInt(process.env.MINUTE_IN_SECONDS);
+const allowedCalls = parseInt(process.env.ALLOWED_REQUESTS_PER_MINUTE);
 
 app.get("/", (req, res) => {
 	res.sendFile(path.join(__dirname, "index.html"));
@@ -14,7 +16,7 @@ app.get("/", (req, res) => {
 
 app.get(
 	"/api/notifications",
-	rateLimiter({ secondsWindow: 10, allowedCalls: 4 }),
+	rateLimiter({ minuteWindow: minuteWindow, allowedCalls: allowedCalls }),
 	async (req, res) => {
 		return res.status(200).json({
 			status: 200,

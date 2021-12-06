@@ -1,8 +1,9 @@
 const redis = require("./redis-client");
 
-const rateLimiter = ({ secondsWindow, allowedCalls }) => {
+const rateLimiter = ({ minuteWindow, allowedCalls }) => {
 	return async (req, res, next) => {
-		const MAX_REQ_PER_MONTH = 20;
+		const MAX_REQ_PER_MONTH = parseInt(process.env.ALLOWED_MONTHLY_REQUESTS);
+		const MONTH_IN_SECONDS = parseInt(process.env.MONTH_IN_SECONDS);
 		const user = req.socket.remoteAddress;
 		const instantRequests = await redis.incr(user);
 		let monthlyRequests = await redis.get(`${user}_monthly`);
@@ -11,8 +12,8 @@ const rateLimiter = ({ secondsWindow, allowedCalls }) => {
 
 		if (monthlyRequests < MAX_REQ_PER_MONTH) {
 			if (instantRequests === 1) {
-				await redis.expire(user, secondsWindow);
-				ttl = secondsWindow;
+				await redis.expire(user, minuteWindow);
+				ttl = minuteWindow;
 			} else {
 				ttl = await redis.ttl(user);
 			}
@@ -26,8 +27,8 @@ const rateLimiter = ({ secondsWindow, allowedCalls }) => {
 			} else {
 				monthlyRequests = await redis.incr(`${user}_monthly`);
 				if (monthlyRequests === 1) {
-					await redis.expire(`${user}_monthly`, 30);
-					monthly_ttl = 30;
+					await redis.expire(`${user}_monthly`, MONTH_IN_SECONDS);
+					monthly_ttl = MONTH_IN_SECONDS;
 				} else {
 					monthly_ttl = await redis.ttl(`${user}_monthly`);
 				}
